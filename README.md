@@ -1,28 +1,28 @@
 # BK Blog
 
-Fullstack SPA blog project:
-- `frontend` - React client
-- `backend` - Express + MongoDB API
+Полноценное fullstack SPA-приложение блога:
+- `frontend` — клиент на React
+- `backend` — API на Express + MongoDB
 
-## Stack
+## Стек
 - Frontend: React, Redux, React Router, styled-components
-- Backend: Node.js, Express, Mongoose, JWT (cookie auth)
-- DB: MongoDB (Atlas or local)
+- Backend: Node.js, Express, Mongoose, JWT (авторизация через cookie)
+- База данных: MongoDB (Atlas или локальная)
 
-## Project Structure
-- `frontend/` - client app
-- `backend/` - API server
-- `backend/routes/` - route modules (`user.js`, `post.js`, `index.js`)
+## Структура проекта
+- `frontend/` — клиентская часть
+- `backend/` — серверная часть
+- `backend/routes/` — роуты (`user.js`, `post.js`, `index.js`)
 
-## API + SPA Routing
-Backend is configured for SPA fallback and API prefix:
-- all API endpoints are under `/api`
-- non-API routes return `frontend/build/index.html`
+## Роутинг API и SPA
+Бэкенд настроен так, чтобы корректно работать с SPA:
+- все API-эндпоинты находятся под префиксом `/api`
+- все не-API запросы возвращают `frontend/build/index.html`
 
-This allows direct refresh/open for routes like `/login`, `/posts/:id` after production build.
+Это позволяет открывать и обновлять URL вроде `/login` и `/posts/:id` без ошибки 404 после сборки фронтенда.
 
-## Environment Variables (backend/.env)
-Example:
+## Переменные окружения (backend/.env)
+Пример:
 
 ```env
 DB_CONNECTION_STRING=mongodb://127.0.0.1:27017/bk-blog
@@ -30,13 +30,13 @@ DB_CONNECTION_STRING_ATLAS=mongodb+srv://<user>:<password>@<cluster>.mongodb.net
 JWT_SECRET=your_long_secret
 ```
 
-Notes:
-- app tries Atlas first (if configured), then falls back to local MongoDB
-- `.env` is ignored by git
+Примечания:
+- приложение сначала пытается подключиться к Atlas (если строка задана), затем использует локальную MongoDB
+- файл `.env` не должен попадать в git
 
-## Local Development
+## Запуск в локальной среде
 
-### 1) Install dependencies
+### 1) Установка зависимостей
 
 ```bash
 cd backend
@@ -46,27 +46,27 @@ cd ../frontend
 npm install
 ```
 
-### 2) Start backend
+### 2) Запуск backend
 
 ```bash
 cd backend
 npm run dev
 ```
 
-Backend default: `http://localhost:3001`
+По умолчанию backend: `http://localhost:3001`
 
-### 3) Start frontend
+### 3) Запуск frontend
 
 ```bash
 cd frontend
 npm start
 ```
 
-Frontend default: `http://localhost:3000`
+По умолчанию frontend: `http://localhost:3000`
 
-Frontend proxy is configured to backend in `frontend/package.json`.
+Во `frontend/package.json` настроен `proxy` на backend.
 
-## Production Build + Backend Serve
+## Продакшен-сборка и раздача через backend
 
 ```bash
 cd frontend
@@ -76,12 +76,12 @@ cd ../backend
 npm run dev
 ```
 
-Backend serves static files from `frontend/build` and handles SPA fallback routes.
+Backend раздает статику из `frontend/build` и обрабатывает SPA-роуты.
 
-## Common Troubleshooting
-- `Invalid token` on public pages: check auth middleware scope in user routes.
-- Atlas DNS errors (`querySrv ENODATA`): verify copied cluster host, DNS settings, and Atlas network access.
-- `EADDRINUSE` on `3001`: stop previous node process using this port.
+## Частые проблемы
+- `Invalid token` на публичных страницах: проверь область применения auth-middleware в user-роутах.
+- Ошибка Atlas `querySrv ENODATA`: проверь хост кластера, DNS и `Network Access` в Atlas.
+- `EADDRINUSE` на порту `3001`: останови предыдущий процесс Node, который уже слушает порт.
 
-## Security Note
-If DB credentials were exposed during setup, rotate MongoDB user password in Atlas immediately.
+## Безопасность
+Если логин/пароль БД случайно попали в чат, скриншоты или коммиты, сразу смени пароль пользователя MongoDB в Atlas.
