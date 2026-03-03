@@ -28,11 +28,15 @@
 DB_CONNECTION_STRING=mongodb://127.0.0.1:27017/bk-blog
 DB_CONNECTION_STRING_ATLAS=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/bk-blog?retryWrites=true&w=majority&appName=Cluster0
 JWT_SECRET=your_long_secret
+HOST=0.0.0.0
+PORT=3001
+SITE_URL=http://<VPS_IP>:3001
 ```
 
 Примечания:
 - приложение сначала пытается подключиться к Atlas (если строка задана), затем использует локальную MongoDB
 - файл `.env` не должен попадать в git
+- `SITE_URL` используется для явного публичного адреса в логах сервера
 
 ## Запуск в локальной среде
 
@@ -77,6 +81,19 @@ npm run dev
 ```
 
 Backend раздает статику из `frontend/build` и обрабатывает SPA-роуты.
+
+## Адрес сайта на VPS
+После запуска backend на VPS сайт будет доступен по:
+- `http://<VPS_IP>:3001` (если порт 3001 открыт)
+- либо по домену из `SITE_URL`, если настроен DNS/прокси
+
+Рекомендуемые значения для `backend/.env`:
+
+```env
+HOST=0.0.0.0
+PORT=3001
+SITE_URL=http://<VPS_IP>:3001
+```
 
 ## Частые проблемы
 - `Invalid token` на публичных страницах: проверь область применения auth-middleware в user-роутах.

@@ -6,7 +6,9 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 
-const port = 3001;
+const port = Number(process.env.PORT) || 3001;
+const host = process.env.HOST || '0.0.0.0';
+const siteUrl = process.env.SITE_URL || `http://localhost:${port}`;
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, '..', 'frontend', 'build')));
@@ -57,8 +59,9 @@ async function connectDatabase() {
 
 connectDatabase()
     .then(() => {
-        app.listen(port, () => {
-            console.log(`Server started on port ${port}`);
+        app.listen(port, host, () => {
+            console.log(`Server started on ${host}:${port}`);
+            console.log(`Public site URL: ${siteUrl}`);
         });
     })
     .catch((error) => {
